@@ -220,7 +220,7 @@ EOF
 %if %build_doc
 %files doc
 %defattr(-,root,root)
-%doc doc/refman/ doc/users-manual/
+%doc doc/refman/ doc/users-manual/ doc/ecell-3.1.105/
 %doc AUTHORS COPYING INSTALL NEWS README
 %endif
 
