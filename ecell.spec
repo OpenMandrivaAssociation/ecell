@@ -151,7 +151,6 @@ EOF
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}-session-monitor.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=E-Cell Session Monitor
 Comment=%{summary}
 Exec=%{_bindir}/ecell3-session-monitor
@@ -162,7 +161,6 @@ Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology
 EOF
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}-model-editor.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=E-Cell Model Editor
 Comment=%{summary}
 Exec=%{_bindir}/ecell3-model-editor
