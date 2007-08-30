@@ -157,7 +157,7 @@ Exec=%{_bindir}/ecell3-session-monitor
 Icon=%{name}
 Terminal=false 
 Type=Application
-Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology
+Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology;
 EOF
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}-model-editor.desktop << EOF
 [Desktop Entry]
@@ -167,7 +167,7 @@ Exec=%{_bindir}/ecell3-model-editor
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology
+Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology;
 EOF
 
 # icons
