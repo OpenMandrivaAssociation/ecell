@@ -152,6 +152,8 @@ EOF
 %__install -D -m 644 %{name}32.png %{buildroot}/%{_iconsdir}/%{name}.png
 %__install -D -m 644 %{name}16.png %{buildroot}/%{_miconsdir}/%{name}.png
 
+rm -fr %buildroot%_datadir/doc/%{name}-%{version}
+cp -R ecell/model-editor/doc doc/model-editor
 
 %clean
 %__rm -rf %{buildroot}
@@ -195,7 +197,6 @@ EOF
 %files doc
 %defattr(-,root,root)
 %doc doc/refman/ doc/users-manual/
+%doc doc/model-editor
 %doc AUTHORS COPYING INSTALL NEWS README
 %endif
-
-
