@@ -4,7 +4,7 @@
 # when compiling SVN: complete this,
 # use %{svn} on line 30, uncomment line 97
 %define svn             2632
-%define rel		2
+%define rel		3
 %define release 	%mkrel 1.%{svn}.%{rel}
 
 # when compiling stable version
@@ -125,49 +125,26 @@ rm -rf %{buildroot}
 %makeinstall
 %multiarch_includes $RPM_BUILD_ROOT%{_includedir}/ecell-3.1/ecell_config.h
 
-# Menu
-mkdir -p %{buildroot}/%{_menudir}
-cat > %{buildroot}/%{_menudir}/%{name} << EOF
-?package(%{name}): \
-command="%{_bindir}/ecell3-session-monitor" \
-needs="X11" \
-icon="%name.png" \
-section="%section" \
-title="%{title}-session-monitor" \
-longtitle="%{summary}" \
-startup_notify="true" \
-xdg="true"
-?package(%{name}): \
-command="%{_bindir}/ecell3-model-editor" \
-needs="X11" \
-icon="%name.png" \
-section="%section" \
-title="%{title}-model-editor" \
-longtitle="%{summary}" \
-startup_notify="true" \
-xdg="true"
-EOF
-
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}-session-monitor.desktop << EOF
 [Desktop Entry]
 Name=E-Cell Session Monitor
-Comment=%{summary}
+Comment=A software suite for modeling, simulation, and analysis of biological cells
 Exec=%{_bindir}/ecell3-session-monitor
 Icon=%{name}
 Terminal=false 
 Type=Application
-Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology;
+Categories=Gtk;Science;Biology;
 EOF
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}-model-editor.desktop << EOF
 [Desktop Entry]
 Name=E-Cell Model Editor
-Comment=%{summary}
+Comment=A software suite for modeling, simulation, and analysis of biological cells
 Exec=%{_bindir}/ecell3-model-editor
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=Gtk;Science;Biology;X-MandrivaLinux-MoreApplications-Sciences-Biology;
+Categories=Gtk;Science;Biology;
 EOF
 
 # icons
@@ -198,7 +175,6 @@ EOF
 %doc doc/sample/ 
 %{_datadir}/ecell-3.1
 %{_datadir}/applications/*
-%{_menudir}/*
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
