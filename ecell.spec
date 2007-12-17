@@ -32,7 +32,6 @@ Source1:	%{name}-icons.tar.bz2
 License:	GPL
 Group:		Sciences/Biology
 Url:		http://ecell.sourceforge.net/
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 Prefix:		%{_prefix}
 Obsoletes:	ecell3 <= 1.0.103
 Buildrequires:	python-numpy gnome-python-canvas boost-devel gsl-devel
