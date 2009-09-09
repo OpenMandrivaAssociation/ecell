@@ -4,7 +4,7 @@
 # when compiling SVN: complete this,
 # use %{svn} on line 30, uncomment line 97
 %define svn             2632
-%define rel		3
+%define rel		4
 %define release 	%mkrel 1.%{svn}.%{rel}
 
 # when compiling stable version
