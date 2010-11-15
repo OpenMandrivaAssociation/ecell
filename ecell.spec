@@ -146,7 +146,7 @@ install -D -m 644 %{name}32.png %{buildroot}/%{_iconsdir}/%{name}.png
 install -D -m 644 %{name}16.png %{buildroot}/%{_miconsdir}/%{name}.png
 
 #fix shebang
-sed -i -e 's|/usr/local/bin|%{_bindir}|g' %{buildroot}%{python_sitelib}/ecell/em.py
+sed -i -e 's|/usr/local/bin|%{_bindir}|g' %{buildroot}%{python_sitearch}/ecell/em.py
 
 # let files section handle docs
 rm -rf %{buildroot}%{_docdir}
