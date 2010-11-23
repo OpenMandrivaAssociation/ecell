@@ -8,7 +8,7 @@
 #define release		%mkrel 1.%{svn}.%{rel}
 
 # when compiling stable version
-%define rel		1
+%define rel		2
 %define release		%mkrel %{rel}
 
 %define major		2
@@ -113,7 +113,6 @@ This package contains extra documentation.
 %package session-monitor
 Summary:	E-Cell Session Monitor
 Group:		Sciences/Biology
-BuildArch:	noarch
 Requires:	ecell = %{version}-%{release}
 Requires:	pygtk2.0
 Requires:	pygtk2.0-libglade
@@ -126,7 +125,6 @@ on biological details of cellular behavior.
 %package model-editor
 Summary:	E-Cell Model Editor
 Group:		Sciences/Biology
-BuildArch:	noarch
 Requires:	ecell = %{version}-%{release}
 Requires:	ecell-session-monitor = %{version}-%{release}
 Requires:	pygtk2.0
