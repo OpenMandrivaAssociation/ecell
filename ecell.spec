@@ -3,20 +3,21 @@
 
 # when compiling SVN: complete this,
 # use %{svn} on line 30, uncomment line 97
-#define svn             2632
-#define rel            5
-#define release        %mkrel 1.%{svn}.%{rel}
+#define svn		2632
+#define rel		5
+#define release		%mkrel 1.%{svn}.%{rel}
 
 # when compiling stable version
-%define rel             1
-%define release         %mkrel %{rel}
+%define rel		1
+%define release		%mkrel %{rel}
 
 %define major		2
 %define libname		%mklibname %{name} %{major}
+%define devname		%mklibname -d %{name}
 
 # disable doc build for now as it brokes the build
 # (11/2010 wally)
-%define build_doc 	0
+%define build_doc	0
 
 Summary:	A software suite for modeling, simulation, and analysis of biological cells
 Name:		%{name}
@@ -53,6 +54,9 @@ Requires:	gnome-python-gnomevfs
 Requires:	pygtk2.0-libglade
 Requires:	python-numpy
 Requires:	%{libname} = %{version}-%{release}
+# require devel package as it's possibly needed on run-time for the examples (samples),
+# see note on description
+Requires:	%{devname} = %{version}-%{release}
 
 %description
 E-Cell Project is an international research project aiming to model and
@@ -69,25 +73,33 @@ since shifted to developing version 3, restructuring the system with
 an aim to provide the cell simulation community a common, highly
 flexible and high performance software environment.
 
+Note that development libraries and headers are also required by this
+package because they may be required to create new biological processes
+or to run the included examples.
+
 %package -n %{libname}
 Summary:	Libraries from Ecell3
 Group:		System/Libraries
-Provides:	%{libname} = %{version}-%{release}
 Obsoletes:	libecell3_2 <= 1.0.103
 
 %description -n %{libname}
-This package provides the libraries and includes files from Ecell3.
-Note that development libraries and headers are also included in this
-package because they may be required to create new biological processes
-or to run the included examples.
- 
-# Note : do not create a libecell3-devel package
-# (see Note in %{libname} description)
+This package provides the libraries for %{name}.
+
+%package -n %{devname}
+Summary:	Developer package for E-Cell System
+Group:		Development/Other
+Provides:	%{name}-devel = %{version}-%{release}
+Requires:	%{libname} = %{version}-%{release}
+Requires:	python-numpy-devel
+
+%description -n %{devname}
+This package provides the development files for %{name}.
 
 %if %build_doc
 %package doc
 Summary:	Ecell3 extras documentations
 Group:		Sciences/Biology
+BuildArch:	noarch
 
 %description doc
 E-Cell Project is an international research project aiming to model and
@@ -97,6 +109,34 @@ whole cell simulation.
 
 This package contains extra documentation.
 %endif
+
+%package session-monitor
+Summary:	E-Cell Session Monitor
+Group:		Sciences/Biology
+BuildArch:	noarch
+Requires:	ecell = %{version}-%{release}
+Requires:	pygtk2.0
+Requires:	pygtk2.0-libglade
+
+%description session-monitor
+E-Cell System is an object-oriented software suite for modeling,
+simulation, and analysis of large scale complex systems, particularly focused
+on biological details of cellular behavior.
+
+%package model-editor
+Summary:	E-Cell Model Editor
+Group:		Sciences/Biology
+BuildArch:	noarch
+Requires:	ecell = %{version}-%{release}
+Requires:	ecell-session-monitor = %{version}-%{release}
+Requires:	pygtk2.0
+Requires:	pygtk2.0-libglade
+Requires:	gnome-python-canvas
+
+%description model-editor
+E-Cell System is an object-oriented software suite for modeling,
+simulation, and analysis of large scale complex systems, particularly focused
+on biological details of cellular behavior.
 
 %prep
 %setup -q
@@ -153,6 +193,12 @@ rm -rf %{buildroot}%{_docdir}
 
 # we don't want these
 rm -rf %{buildroot}%{_libdir}/*.la
+rm -rf %{buildroot}%{_libdir}/%{name}-3.2/session-monitor/plugins/Makefile*
+rm -rf %{buildroot}%{_libdir}/%{name}-3.2/model-editor/plugins/Makefile.am
+
+#fix rights
+chmod 644 %{buildroot}%{_libdir}/%{name}-3.2/session-monitor/plugins/*.xpm
+chmod 644 %{buildroot}%{_libdir}/%{name}-3.2/model-editor/plugins/*.py
 
 %if %{build_doc}
 #move to a better location
@@ -166,11 +212,14 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc COPYING AUTHORS NEWS README doc/samples
 %dir %{_sysconfdir}/ecell-3.2/
-%config(noreplace) %{_sysconfdir}/ecell-3.2/*.ini
-%{_bindir}/ecell3-*
-%{_bindir}/dmcompile
+%{_bindir}/ecell3-em2eml
+%{_bindir}/ecell3-eml2em
+%{_bindir}/ecell3-eml2sbml
+%{_bindir}/ecell3-python
+%{_bindir}/ecell3-sbml2eml
+%{_bindir}/ecell3-session
+%{_bindir}/ecell3-session-manager
 %{_datadir}/ecell-3.2
-%{_datadir}/applications/*.desktop
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
@@ -178,17 +227,46 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %doc COPYING AUTHORS NEWS README
+%exclude %{_libdir}/ecell-3.2/model-editor
+%exclude %{_libdir}/ecell-3.2/session-monitor
+%exclude %{python_sitelib}/%{name}/ui
 %{_libdir}/ecell-3.2
 %{_libdir}/*.so.*
 %{python_sitearch}/ecell
-%{python_sitearch}/*.egg-info
+%{python_sitearch}/E_Cell-%{version}-py%{py_ver}.egg-info
 
-# Note: leave dev libraries and includes files in %{libname}
-# (see %{libname} description), they are needed for the examples (samples)
+%files -n %{devname}
+%defattr(-,root,root)
+%doc AUTHORS COPYING README
+%{_bindir}/dmcompile
+%{_bindir}/ecell3-dmc
 %{_libdir}/*.so
 %{_includedir}/dmtool
 %{_includedir}/ecell-3.2
 %{multiarch_includedir}/ecell-3.2
+
+%files session-monitor
+%defattr(-,root,root)
+%doc AUTHORS COPYING README
+%dir %{_sysconfdir}/ecell-3.2
+%config(noreplace) %{_sysconfdir}/ecell-3.2/osogo.ini
+%{_bindir}/ecell3-session-monitor
+%{_libdir}/ecell-3.2/session-monitor
+%dir %{python_sitelib}/%{name}/ui
+%{python_sitelib}/%{name}/ui/*.py
+%{python_sitelib}/%{name}/ui/osogo
+%{python_sitelib}/%{name}.session_monitor-%{version}-py%{pyver}.egg-info
+%{_datadir}/applications/mandriva-%{name}-session-monitor.desktop
+
+%files model-editor
+%defattr(-,root,root)
+%doc AUTHORS COPYING README
+%config(noreplace) %{_sysconfdir}/ecell-3.2/model-editor.ini
+%{_bindir}/ecell3-model-editor
+%{_libdir}/ecell-3.2/model-editor
+%{python_sitelib}/%{name}/ui/model_editor
+%{python_sitelib}/%{name}.model_editor-%{version}-py%{pyver}.egg-info
+%{_datadir}/applications/mandriva-%{name}-model-editor.desktop
 
 %if %{build_doc}
 %files doc
