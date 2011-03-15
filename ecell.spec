@@ -8,7 +8,7 @@
 #define release		%mkrel 1.%{svn}.%{rel}
 
 # when compiling stable version
-%define rel		2
+%define rel		3
 %define release		%mkrel %{rel}
 
 %define major		2
