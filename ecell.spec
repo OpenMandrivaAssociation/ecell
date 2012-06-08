@@ -1,16 +1,3 @@
-%define name            ecell
-%define version         3.2.1  
-
-# when compiling SVN: complete this,
-# use %{svn} on line 30, uncomment line 97
-#define svn		2632
-#define rel		5
-#define release		%mkrel 1.%{svn}.%{rel}
-
-# when compiling stable version
-%define rel		3
-%define release		%mkrel %{rel}
-
 %define major		2
 %define libname		%mklibname %{name} %{major}
 %define devname		%mklibname -d %{name}
@@ -20,18 +7,15 @@
 %define build_doc	0
 
 Summary:	A software suite for modeling, simulation, and analysis of biological cells
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
-# Source0: if stable use %{name}-%{version}.tar.bz2
-# if SVN use %{name}-%{version}-%{svn}.tar.bz2
-Source0:	%{name}-%{version}.tar.bz2
-Source1:	%{name}-icons.tar.bz2
+Name:		ecell
+Version:	3.2.1
+Release:	4
 License:	GPLv2+ and LGPLv2+
 Group:		Sciences/Biology
 Url:		http://ecell.sourceforge.net/
-BuildRoot:	%{_tmppath}/%{name}-buildroot
-Obsoletes:	ecell3 <= 1.0.103
+Source0:	%{name}-%{version}.tar.bz2
+Source1:	%{name}-icons.tar.bz2
+
 Buildrequires:	gnome-python-canvas
 BuildRequires:	boost-devel
 BuildRequires:	gsl-devel
@@ -149,7 +133,6 @@ sed -i -e 's|CXXFLAGS = .*|CXXFLAGS = |g' ecell/dm/Makefile
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 %multiarch_includes %{buildroot}%{_includedir}/ecell-3.2/ecell_config.h
@@ -203,11 +186,7 @@ chmod 644 %{buildroot}%{_libdir}/%{name}-3.2/model-editor/plugins/*.py
 cp -R ecell/model-editor/doc doc/model-editor
 %endif
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc COPYING AUTHORS NEWS README doc/samples
 %dir %{_sysconfdir}/ecell-3.2/
 %{_bindir}/ecell3-em2eml
@@ -223,7 +202,6 @@ rm -rf %{buildroot}
 %{_miconsdir}/%{name}.png
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc COPYING AUTHORS NEWS README
 %exclude %{_libdir}/ecell-3.2/model-editor
 %exclude %{_libdir}/ecell-3.2/session-monitor
@@ -234,7 +212,6 @@ rm -rf %{buildroot}
 %{python_sitearch}/E_Cell-%{version}-py%{py_ver}.egg-info
 
 %files -n %{devname}
-%defattr(-,root,root)
 %doc AUTHORS COPYING README
 %{_bindir}/dmcompile
 %{_bindir}/ecell3-dmc
@@ -244,7 +221,6 @@ rm -rf %{buildroot}
 %{multiarch_includedir}/ecell-3.2
 
 %files session-monitor
-%defattr(-,root,root)
 %doc AUTHORS COPYING README
 %dir %{_sysconfdir}/ecell-3.2
 %config(noreplace) %{_sysconfdir}/ecell-3.2/osogo.ini
@@ -257,7 +233,6 @@ rm -rf %{buildroot}
 %{_datadir}/applications/mandriva-%{name}-session-monitor.desktop
 
 %files model-editor
-%defattr(-,root,root)
 %doc AUTHORS COPYING README
 %config(noreplace) %{_sysconfdir}/ecell-3.2/model-editor.ini
 %{_bindir}/ecell3-model-editor
@@ -268,6 +243,6 @@ rm -rf %{buildroot}
 
 %if %{build_doc}
 %files doc
-%defattr(-,root,root)
 %doc doc/refman doc/users-manual doc/model-editor doc/api
 %endif
+
