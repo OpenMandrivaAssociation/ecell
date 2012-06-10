@@ -23,7 +23,7 @@ BuildRequires:	python-ply
 BuildRequires:	python-devel
 BuildRequires:	python-numpy-devel
 BuildRequires:	pygtk2.0-libglade
-BuildRequires:	libltdl-devel
+BuildRequires:	libtool-devel
 
 %if %{build_doc}
 BuildRequires:	doxygen
