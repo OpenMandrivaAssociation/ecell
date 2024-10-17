@@ -12,7 +12,7 @@ Version:	3.2.1
 Release:	4
 License:	GPLv2+ and LGPLv2+
 Group:		Sciences/Biology
-Url:		http://ecell.sourceforge.net/
+Url:		https://ecell.sourceforge.net/
 Source0:	%{name}-%{version}.tar.bz2
 Source1:	%{name}-icons.tar.bz2
 
